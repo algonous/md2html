@@ -1,0 +1,13 @@
+{
+  "Blocks": [
+    {
+      "kind": "paragraph",
+      "text": "Hello world."
+    },
+    {
+      "kind": "paragraph",
+      "text": "This is a second paragraph.",
+      "blankBefore": true
+    }
+  ]
+}

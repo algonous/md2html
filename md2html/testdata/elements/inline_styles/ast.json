@@ -1,0 +1,30 @@
+{
+  "Blocks": [
+    {
+      "kind": "paragraph",
+      "text": "This has bold and italic and code and strikethrough text.",
+      "inlineStyles": [
+        {
+          "start": 9,
+          "end": 13,
+          "bold": true
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "italic": true
+        },
+        {
+          "start": 29,
+          "end": 33,
+          "code": true
+        },
+        {
+          "start": 38,
+          "end": 51,
+          "strikethrough": true
+        }
+      ]
+    }
+  ]
+}

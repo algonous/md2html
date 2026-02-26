@@ -1,0 +1,58 @@
+{
+  "Blocks": [
+    {
+      "table": {
+        "header": [
+          {
+            "segments": [
+              {
+                "text": "Name"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "Value"
+              }
+            ]
+          }
+        ],
+        "rows": [
+          [
+            {
+              "segments": [
+                {
+                  "text": "Alpha"
+                }
+              ]
+            },
+            {
+              "segments": [
+                {
+                  "text": "100"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "segments": [
+                {
+                  "text": "Beta"
+                }
+              ]
+            },
+            {
+              "segments": [
+                {
+                  "text": "200"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

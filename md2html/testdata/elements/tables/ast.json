@@ -1,0 +1,36 @@
+{
+  "Blocks": [
+    {
+      "kind": "table",
+      "table": {
+        "columns": 2,
+        "rows": [
+          [
+            {
+              "text": "Name"
+            },
+            {
+              "text": "Value"
+            }
+          ],
+          [
+            {
+              "text": "Alpha"
+            },
+            {
+              "text": "100"
+            }
+          ],
+          [
+            {
+              "text": "Beta"
+            },
+            {
+              "text": "200"
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

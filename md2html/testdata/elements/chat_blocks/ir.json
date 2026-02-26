@@ -1,0 +1,54 @@
+{
+  "Blocks": [
+    {
+      "chatBlock": {
+        "role": "prompt",
+        "inner": {
+          "Blocks": [
+            {
+              "paragraph": {
+                "segments": [
+                  {
+                    "text": "Hello "
+                  },
+                  {
+                    "text": "world",
+                    "bold": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "thematicBreak": {}
+    },
+    {
+      "chatBlock": {
+        "role": "agent",
+        "inner": {
+          "Blocks": [
+            {
+              "paragraph": {
+                "segments": [
+                  {
+                    "text": "Response with "
+                  },
+                  {
+                    "text": "code",
+                    "code": true
+                  },
+                  {
+                    "text": "."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

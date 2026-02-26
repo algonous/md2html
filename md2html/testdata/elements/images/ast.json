@@ -1,0 +1,11 @@
+{
+  "Blocks": [
+    {
+      "kind": "image",
+      "image": {
+        "alt": "Alt text",
+        "source": "https://example.com/image.png"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "Blocks": [
+    {
+      "kind": "paragraph",
+      "text": "Visit Google for more info.",
+      "inlineStyles": [
+        {
+          "start": 6,
+          "end": 12,
+          "linkUrl": "https://www.google.com"
+        }
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "text": "Also check https://example.com directly.",
+      "blankBefore": true,
+      "inlineStyles": [
+        {
+          "start": 11,
+          "end": 30,
+          "linkUrl": "https://example.com"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+/* Styles for "solution" chat blocks. */
+
+.chat-solution {
+  border-left-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.chat-solution .chat-role {
+  color: #166534;
+}

@@ -1,0 +1,27 @@
+{
+  "Blocks": [
+    {
+      "kind": "list_item",
+      "text": "Top level"
+    },
+    {
+      "kind": "list_item",
+      "text": "Nested item",
+      "listDepth": 1
+    },
+    {
+      "kind": "list_item",
+      "text": "Another nested",
+      "listDepth": 1
+    },
+    {
+      "kind": "list_item",
+      "text": "Deep nested",
+      "listDepth": 2
+    },
+    {
+      "kind": "list_item",
+      "text": "Back to top"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+/* Styles for "quote" chat blocks. */
+
+.chat-quote {
+  border-left-color: #0d9488;
+  background: #f0fdfa;
+}
+
+.chat-quote .chat-role {
+  color: #115e59;
+}

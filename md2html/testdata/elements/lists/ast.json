@@ -1,0 +1,32 @@
+{
+  "Blocks": [
+    {
+      "kind": "list_item",
+      "text": "First item"
+    },
+    {
+      "kind": "list_item",
+      "text": "Second item"
+    },
+    {
+      "kind": "list_item",
+      "text": "Third item"
+    },
+    {
+      "kind": "list_item",
+      "text": "One",
+      "ordered": true,
+      "blankBefore": true
+    },
+    {
+      "kind": "list_item",
+      "text": "Two",
+      "ordered": true
+    },
+    {
+      "kind": "list_item",
+      "text": "Three",
+      "ordered": true
+    }
+  ]
+}

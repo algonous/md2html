@@ -1,0 +1,10 @@
+/* Styles for "problem" chat blocks. */
+
+.chat-problem {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+.chat-problem .chat-role {
+  color: #991b1b;
+}

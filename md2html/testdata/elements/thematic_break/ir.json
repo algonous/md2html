@@ -1,0 +1,25 @@
+{
+  "Blocks": [
+    {
+      "paragraph": {
+        "segments": [
+          {
+            "text": "Before the break."
+          }
+        ]
+      }
+    },
+    {
+      "thematicBreak": {}
+    },
+    {
+      "paragraph": {
+        "segments": [
+          {
+            "text": "After the break."
+          }
+        ]
+      }
+    }
+  ]
+}

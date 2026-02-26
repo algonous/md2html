@@ -1,0 +1,53 @@
+{
+  "Blocks": [
+    {
+      "list": {
+        "ordered": false,
+        "items": [
+          {
+            "segments": [
+              {
+                "text": "First item"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "Second item"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "Third item"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "One"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "Two"
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "text": "Three"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

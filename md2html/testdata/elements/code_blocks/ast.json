@@ -1,0 +1,14 @@
+{
+  "Blocks": [
+    {
+      "kind": "code_block",
+      "text": "func main() {\n\tfmt.Println(\"hello\")\n}",
+      "codeLanguage": "go"
+    },
+    {
+      "kind": "code_block",
+      "text": "plain code block",
+      "blankBefore": true
+    }
+  ]
+}

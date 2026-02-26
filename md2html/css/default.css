@@ -1,0 +1,10 @@
+/* Default styles for unrecognized chat block identifiers. */
+
+.chat-default {
+  border-left-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.chat-default .chat-role {
+  color: #4b5563;
+}

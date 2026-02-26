@@ -1,0 +1,36 @@
+{
+  "Blocks": [
+    {
+      "paragraph": {
+        "segments": [
+          {
+            "text": "Visit "
+          },
+          {
+            "text": "Google",
+            "linkUrl": "https://www.google.com"
+          },
+          {
+            "text": " for more info."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": {
+        "segments": [
+          {
+            "text": "Also check "
+          },
+          {
+            "text": "https://example.com",
+            "linkUrl": "https://example.com"
+          },
+          {
+            "text": " directly."
+          }
+        ]
+      }
+    }
+  ]
+}

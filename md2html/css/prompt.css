@@ -1,0 +1,10 @@
+/* Styles for "prompt" chat blocks (user messages). */
+
+.chat-prompt {
+  border-left-color: #d97706;
+  background: #fefce8;
+}
+
+.chat-prompt .chat-role {
+  color: #854d0e;
+}

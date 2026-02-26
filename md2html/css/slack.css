@@ -1,0 +1,10 @@
+/* Styles for "slack" chat blocks. */
+
+.chat-slack {
+  border-left-color: #611f69;
+  background: #fdf4ff;
+}
+
+.chat-slack .chat-role {
+  color: #4a154b;
+}

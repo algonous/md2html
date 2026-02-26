@@ -1,0 +1,56 @@
+{
+  "Blocks": [
+    {
+      "list": {
+        "ordered": false,
+        "items": [
+          {
+            "segments": [
+              {
+                "text": "Top level"
+              }
+            ],
+            "children": {
+              "ordered": false,
+              "items": [
+                {
+                  "segments": [
+                    {
+                      "text": "Nested item"
+                    }
+                  ]
+                },
+                {
+                  "segments": [
+                    {
+                      "text": "Another nested"
+                    }
+                  ],
+                  "children": {
+                    "ordered": false,
+                    "items": [
+                      {
+                        "segments": [
+                          {
+                            "text": "Deep nested"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "segments": [
+              {
+                "text": "Back to top"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "Blocks": [
+    {
+      "paragraph": {
+        "segments": [
+          {
+            "text": "This has "
+          },
+          {
+            "text": "bold",
+            "bold": true
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "italic",
+            "italic": true
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "code",
+            "code": true
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "strikethrough",
+            "strikethrough": true
+          },
+          {
+            "text": " text."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "Blocks": [
+    {
+      "heading": {
+        "level": 1,
+        "segments": [
+          {
+            "text": "Heading 1"
+          }
+        ]
+      }
+    },
+    {
+      "heading": {
+        "level": 2,
+        "segments": [
+          {
+            "text": "Heading 2"
+          }
+        ]
+      }
+    },
+    {
+      "heading": {
+        "level": 3,
+        "segments": [
+          {
+            "text": "Heading 3"
+          }
+        ]
+      }
+    },
+    {
+      "heading": {
+        "level": 4,
+        "segments": [
+          {
+            "text": "Heading 4"
+          }
+        ]
+      }
+    }
+  ]
+}

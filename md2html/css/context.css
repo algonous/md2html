@@ -1,0 +1,10 @@
+/* Styles for "context" chat blocks. */
+
+.chat-context {
+  border-left-color: #a78bfa;
+  background: #f5f3ff;
+}
+
+.chat-context .chat-role {
+  color: #5b21b6;
+}

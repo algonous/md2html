@@ -1,0 +1,10 @@
+/* Styles for "agent" chat blocks (AI responses). */
+
+.chat-agent {
+  border-left-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.chat-agent .chat-role {
+  color: #1e40af;
+}

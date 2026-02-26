@@ -1,0 +1,17 @@
+{
+  "Blocks": [
+    {
+      "kind": "paragraph",
+      "text": "Before the break."
+    },
+    {
+      "kind": "thematic_break",
+      "blankBefore": true
+    },
+    {
+      "kind": "paragraph",
+      "text": "After the break.",
+      "blankBefore": true
+    }
+  ]
+}
