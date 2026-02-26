@@ -1,4 +1,4 @@
-module md2html
+module github.com/algonous/md2html
 
 go 1.25.0
 

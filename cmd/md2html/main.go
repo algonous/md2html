@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"md2html/md2html"
+	"github.com/algonous/md2html/md2html"
 )
 
 func main() {
