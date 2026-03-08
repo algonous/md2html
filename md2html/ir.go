@@ -153,12 +153,25 @@ func convertBlocks(blocks []Block, depth int) []IRBlock {
 func groupListItems(blocks []Block) (*IRList, int) {
 	consumed := 0
 	for consumed < len(blocks) && blocks[consumed].Kind == ListItem {
+		if consumed > 0 && startsNewTopLevelList(blocks[consumed-1], blocks[consumed]) {
+			break
+		}
 		consumed++
 	}
 
 	items := blocks[:consumed]
 	root := buildListTree(items, 0)
 	return root, consumed
+}
+
+func startsNewTopLevelList(prev, cur Block) bool {
+	if cur.ListDepth != 0 || prev.ListDepth != 0 {
+		return false
+	}
+	if cur.BlankBefore {
+		return true
+	}
+	return prev.Ordered != cur.Ordered
 }
 
 // buildListTree builds a nested IRList from flat ListItem blocks at the

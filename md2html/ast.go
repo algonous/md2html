@@ -463,3 +463,4 @@ func stylesEqual(a, b InlineStyle) bool {
 	return a.Bold == b.Bold && a.Italic == b.Italic && a.Code == b.Code &&
 		a.Strikethrough == b.Strikethrough && a.LinkURL == b.LinkURL
 }
+

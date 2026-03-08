@@ -107,3 +107,55 @@ func TestASTToIR_ChatBlocks(t *testing.T) {
 		t.Errorf("IR mismatch for chat_blocks.\nGot:\n%s\nWant:\n%s", gotJSON, wantJSON)
 	}
 }
+
+func TestASTToIR_MixedTopLevelListTypesStaySeparated(t *testing.T) {
+	input := `1. Ingest
+
+- Input EPUB
+- Parse chapters/paragraphs/sentences
+
+2. User model
+
+- Keep a per-user profile`
+
+	astDoc, err := ParseMarkdownToAST(input)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+
+	ir := ASTToIR(astDoc)
+
+	lists := make([]*IRList, 0)
+	for _, b := range ir.Blocks {
+		if b.List != nil {
+			lists = append(lists, b.List)
+		}
+	}
+
+	if len(lists) != 4 {
+		t.Fatalf("expected 4 top-level lists (ol, ul, ol, ul), got %d", len(lists))
+	}
+
+	wantOrdered := []bool{true, false, true, false}
+	for i := range wantOrdered {
+		if lists[i].Ordered != wantOrdered[i] {
+			t.Fatalf("list %d ordered mismatch: got %v want %v", i, lists[i].Ordered, wantOrdered[i])
+		}
+		if len(lists[i].Items) == 0 {
+			t.Fatalf("list %d has no items", i)
+		}
+	}
+
+	firstTexts := []string{
+		segmentsToPlainText(lists[0].Items[0].Segments),
+		segmentsToPlainText(lists[1].Items[0].Segments),
+		segmentsToPlainText(lists[2].Items[0].Segments),
+		segmentsToPlainText(lists[3].Items[0].Segments),
+	}
+	wantTexts := []string{"Ingest", "Input EPUB", "User model", "Keep a per-user profile"}
+	for i := range wantTexts {
+		if firstTexts[i] != wantTexts[i] {
+			t.Fatalf("list %d first item mismatch: got %q want %q", i, firstTexts[i], wantTexts[i])
+		}
+	}
+}

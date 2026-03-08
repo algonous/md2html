@@ -24,7 +24,14 @@
                 "text": "Third item"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "list": {
+        "ordered": true,
+        "items": [
           {
             "segments": [
               {
