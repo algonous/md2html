@@ -108,7 +108,7 @@ func TestASTToIR_ChatBlocks(t *testing.T) {
 	}
 }
 
-func TestASTToIR_MixedTopLevelListTypesStaySeparated(t *testing.T) {
+func TestASTToIR_MixedTopLevelListBecomesOrderedWithBulletChildren(t *testing.T) {
 	input := `1. Ingest
 
 - Input EPUB
@@ -132,30 +132,32 @@ func TestASTToIR_MixedTopLevelListTypesStaySeparated(t *testing.T) {
 		}
 	}
 
-	if len(lists) != 4 {
-		t.Fatalf("expected 4 top-level lists (ol, ul, ol, ul), got %d", len(lists))
+	if len(lists) != 1 {
+		t.Fatalf("expected 1 top-level ordered list, got %d", len(lists))
+	}
+	if !lists[0].Ordered {
+		t.Fatalf("expected top-level list to be ordered")
+	}
+	if len(lists[0].Items) != 2 {
+		t.Fatalf("expected 2 ordered items, got %d", len(lists[0].Items))
 	}
 
-	wantOrdered := []bool{true, false, true, false}
-	for i := range wantOrdered {
-		if lists[i].Ordered != wantOrdered[i] {
-			t.Fatalf("list %d ordered mismatch: got %v want %v", i, lists[i].Ordered, wantOrdered[i])
-		}
-		if len(lists[i].Items) == 0 {
-			t.Fatalf("list %d has no items", i)
-		}
-	}
-
-	firstTexts := []string{
+	orderedTexts := []string{
 		segmentsToPlainText(lists[0].Items[0].Segments),
-		segmentsToPlainText(lists[1].Items[0].Segments),
-		segmentsToPlainText(lists[2].Items[0].Segments),
-		segmentsToPlainText(lists[3].Items[0].Segments),
+		segmentsToPlainText(lists[0].Items[1].Segments),
 	}
-	wantTexts := []string{"Ingest", "Input EPUB", "User model", "Keep a per-user profile"}
-	for i := range wantTexts {
-		if firstTexts[i] != wantTexts[i] {
-			t.Fatalf("list %d first item mismatch: got %q want %q", i, firstTexts[i], wantTexts[i])
-		}
+	if orderedTexts[0] != "Ingest" || orderedTexts[1] != "User model" {
+		t.Fatalf("unexpected ordered item texts: %+v", orderedTexts)
+	}
+
+	if lists[0].Items[0].Children == nil || lists[0].Items[1].Children == nil {
+		t.Fatalf("expected bullet children for both ordered items")
+	}
+	if lists[0].Items[0].Children.Ordered || lists[0].Items[1].Children.Ordered {
+		t.Fatalf("expected child lists to be unordered")
+	}
+	if len(lists[0].Items[0].Children.Items) != 2 || len(lists[0].Items[1].Children.Items) != 1 {
+		t.Fatalf("unexpected child list sizes: first=%d second=%d",
+			len(lists[0].Items[0].Children.Items), len(lists[0].Items[1].Children.Items))
 	}
 }

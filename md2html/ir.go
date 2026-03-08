@@ -151,16 +151,25 @@ func convertBlocks(blocks []Block, depth int) []IRBlock {
 // and returns a nested IRList tree. Returns the IRList and how many blocks
 // were consumed.
 func groupListItems(blocks []Block) (*IRList, int) {
-	consumed := 0
-	for consumed < len(blocks) && blocks[consumed].Kind == ListItem {
-		if consumed > 0 && startsNewTopLevelList(blocks[consumed-1], blocks[consumed]) {
-			break
-		}
-		consumed++
+	all := 0
+	for all < len(blocks) && blocks[all].Kind == ListItem {
+		all++
+	}
+	items := blocks[:all]
+
+	if root := buildInterleavedOrderedList(items); root != nil {
+		return root, all
 	}
 
-	items := blocks[:consumed]
-	root := buildListTree(items, 0)
+	consumed := all
+	for i := 1; i < all; i++ {
+		if startsNewTopLevelList(items[i-1], items[i]) {
+			consumed = i
+			break
+		}
+	}
+
+	root := buildListTree(items[:consumed], 0)
 	return root, consumed
 }
 
@@ -168,10 +177,67 @@ func startsNewTopLevelList(prev, cur Block) bool {
 	if cur.ListDepth != 0 || prev.ListDepth != 0 {
 		return false
 	}
-	if cur.BlankBefore {
-		return true
-	}
 	return prev.Ordered != cur.Ordered
+}
+
+// buildInterleavedOrderedList folds this common LLM output pattern:
+// ordered item, top-level bullets, ordered item, top-level bullets...
+// into one ordered list with per-item unordered children.
+func buildInterleavedOrderedList(items []Block) *IRList {
+	if len(items) < 3 || !items[0].Ordered {
+		return nil
+	}
+	for _, it := range items {
+		if it.ListDepth != 0 {
+			return nil
+		}
+	}
+
+	hasUnordered := false
+	hasOrderedAfterUnordered := false
+	seenUnordered := false
+	for i := range items {
+		if !items[i].Ordered {
+			hasUnordered = true
+			seenUnordered = true
+			continue
+		}
+		if seenUnordered {
+			hasOrderedAfterUnordered = true
+		}
+	}
+	if !hasUnordered || !hasOrderedAfterUnordered {
+		return nil
+	}
+
+	root := &IRList{Ordered: true, Items: make([]IRListItem, 0)}
+	i := 0
+	for i < len(items) {
+		if !items[i].Ordered {
+			return nil
+		}
+		parent := IRListItem{
+			Segments: inlineStylesToSegments(items[i].Text, items[i].InlineStyles),
+		}
+		i++
+
+		start := i
+		for i < len(items) && !items[i].Ordered {
+			i++
+		}
+		if i > start {
+			children := &IRList{Ordered: false, Items: make([]IRListItem, 0, i-start)}
+			for j := start; j < i; j++ {
+				children.Items = append(children.Items, IRListItem{
+					Segments: inlineStylesToSegments(items[j].Text, items[j].InlineStyles),
+				})
+			}
+			parent.Children = children
+		}
+		root.Items = append(root.Items, parent)
+	}
+
+	return root
 }
 
 // buildListTree builds a nested IRList from flat ListItem blocks at the
