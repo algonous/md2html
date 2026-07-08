@@ -1,21 +1,9 @@
 {
   "Blocks": [
     {
-      "chatBlock": {
-        "role": "go",
-        "inner": {
-          "Blocks": [
-            {
-              "paragraph": {
-                "segments": [
-                  {
-                    "text": "func main() { fmt.Println(\"hello\") }"
-                  }
-                ]
-              }
-            }
-          ]
-        }
+      "codeBlock": {
+        "language": "go",
+        "text": "func main() {\n\tfmt.Println(\"hello\")\n}"
       }
     },
     {

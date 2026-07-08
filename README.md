@@ -10,7 +10,7 @@ Markdown  ->  AST  ->  IR  ->  HTML
 ```
 
 1. **AST** (`ast.go`) -- Parses markdown via [goldmark](https://github.com/yuin/goldmark) (with GFM extensions) into a normalized block AST.
-2. **IR** (`ir.go`) -- Converts AST blocks into an output-format-agnostic intermediate representation. Fenced blocks tagged with chat identifiers (e.g. `prompt`, `agent`) are recursively parsed as nested markdown.
+2. **IR** (`ir.go`) -- Converts AST blocks into an output-format-agnostic intermediate representation. Fenced blocks tagged with chat identifiers (e.g. `prompt`, `agent`) are recursively parsed as nested markdown; ordinary language fences remain code blocks.
 3. **HTML** (`html.go`) -- Renders the IR to a self-contained HTML document with embedded CSS and a zoom keyboard shortcut.
 
 ## Supported elements
@@ -73,7 +73,7 @@ md2html -o - notes.md
 
 ### Chat blocks
 
-Any fenced code block **with** a language identifier is treated as a chat block. Fenced code blocks **without** a language are rendered as plain `<pre><code>`.
+Fenced code blocks tagged with a chat identifier are treated as chat blocks. Ordinary language identifiers are rendered as code blocks with a language class. Fenced code blocks without a language are rendered as plain `<pre><code>`.
 
 ````markdown
 ```prompt
@@ -89,19 +89,23 @@ The inner content of each chat block is parsed as full markdown, so bold, lists,
 
 ## Language identifiers
 
-The following identifiers have dedicated CSS styling. Any other identifier uses the default style.
+The following identifiers are treated as chat blocks. Identifiers with dedicated CSS get that styling; otherwise a registered chat identifier uses the default style.
 
-| Identifier | Color             | Use case                          |
-|------------|-------------------|-----------------------------------|
-| `prompt`   | amber/gold        | User messages / instructions      |
-| `agent`    | blue              | AI responses                      |
-| `problem`  | red               | Problems / issues                 |
-| `solution` | green             | Solutions / resolutions           |
-| `context`  | violet            | Background context / reference    |
-| `shell`    | dark, green accent | Terminal / command-line output     |
-| `quote`    | teal              | Quotations                        |
-| `slack`    | aubergine/plum    | Slack messages                    |
-| (other)    | neutral gray      | Any unlisted identifier           |
+| Identifier            | Color              | Use case                                |
+|-----------------------|--------------------|-----------------------------------------|
+| `prompt`              | amber/gold         | User messages / instructions            |
+| `agent`               | blue               | AI responses                            |
+| `problem`             | red                | Problems / issues                       |
+| `solution`            | green              | Solutions / resolutions                 |
+| `context`             | violet             | Background context / reference          |
+| `shell`               | dark, green accent | Terminal / command-line output          |
+| `quote`               | teal               | Quotations                              |
+| `slack`               | aubergine/plum     | Slack messages                          |
+| (registered custom)   | neutral gray       | Custom chat block without dedicated CSS |
+
+Library callers can override chat block identifiers with `ASTToIRWithOptions`.
+Passing an empty identifier list disables chat block parsing and renders all
+fenced blocks as code blocks.
 
 ## CSS
 

@@ -77,17 +77,68 @@ type IRSegment struct {
 	LinkURL       string `json:"linkUrl,omitempty"`
 }
 
+var defaultChatBlockIdentifiers = []string{
+	"prompt",
+	"agent",
+	"problem",
+	"solution",
+	"context",
+	"shell",
+	"quote",
+	"slack",
+}
+
+// IROptions controls AST to IR conversion behavior.
+type IROptions struct {
+	// ChatBlockIdentifiers lists fenced code block identifiers that should be
+	// parsed as chat blocks. When nil, the default md2html identifiers are used.
+	// When empty, all fenced code blocks remain code blocks.
+	ChatBlockIdentifiers []string
+}
+
 // ASTToIR converts an AST Document to a generic IR Document.
-// Fenced code blocks with a language identifier are treated as chat blocks
-// whose content is recursively parsed as markdown. Fenced code blocks
-// without a language remain as plain code blocks.
+// Fenced code blocks with a chat identifier are treated as chat blocks
+// whose content is recursively parsed as markdown. Other fenced code blocks
+// remain as code blocks, preserving their language identifier when present.
 func ASTToIR(doc Document) IRDocument {
+	return ASTToIRWithOptions(doc, IROptions{})
+}
+
+// ASTToIRWithOptions converts an AST Document using explicit conversion options.
+func ASTToIRWithOptions(doc Document, opts IROptions) IRDocument {
 	return IRDocument{
-		Blocks: convertBlocks(doc.Blocks, 0),
+		Blocks: convertBlocks(doc.Blocks, 0, chatBlockIdentifierSet(opts.ChatBlockIdentifiers)),
 	}
 }
 
-func convertBlocks(blocks []Block, depth int) []IRBlock {
+// DefaultChatBlockIdentifiers returns the default fenced-block identifiers that
+// are parsed as chat blocks.
+func DefaultChatBlockIdentifiers() []string {
+	out := make([]string, len(defaultChatBlockIdentifiers))
+	copy(out, defaultChatBlockIdentifiers)
+	return out
+}
+
+func chatBlockIdentifierSet(identifiers []string) map[string]struct{} {
+	if identifiers == nil {
+		identifiers = defaultChatBlockIdentifiers
+	}
+	set := make(map[string]struct{}, len(identifiers))
+	for _, id := range identifiers {
+		id = strings.ToLower(strings.TrimSpace(id))
+		if id != "" {
+			set[id] = struct{}{}
+		}
+	}
+	return set
+}
+
+func isChatBlockIdentifier(lang string, identifiers map[string]struct{}) bool {
+	_, ok := identifiers[strings.ToLower(lang)]
+	return ok
+}
+
+func convertBlocks(blocks []Block, depth int, chatBlockIdentifiers map[string]struct{}) []IRBlock {
 	out := make([]IRBlock, 0, len(blocks))
 	i := 0
 	for i < len(blocks) {
@@ -117,18 +168,18 @@ func convertBlocks(blocks []Block, depth int) []IRBlock {
 			continue
 		case CodeBlock:
 			lang := b.CodeLanguage
-			if lang != "" && depth == 0 {
+			if lang != "" && depth == 0 && isChatBlockIdentifier(lang, chatBlockIdentifiers) {
 				// Recursively parse the code block content as markdown.
 				// Fence box-drawing lines so goldmark preserves them.
 				innerAST, err := ParseMarkdownToAST(fenceBoxDrawing(b.Text))
 				if err == nil {
-					innerIR := IRDocument{Blocks: convertBlocks(innerAST.Blocks, depth+1)}
+					innerIR := IRDocument{Blocks: convertBlocks(innerAST.Blocks, depth+1, chatBlockIdentifiers)}
 					out = append(out, IRBlock{ChatBlock: &IRChatBlock{Role: lang, Inner: innerIR}})
 				} else {
-					out = append(out, IRBlock{CodeBlock: &IRCodeBlock{Text: b.Text}})
+					out = append(out, IRBlock{CodeBlock: &IRCodeBlock{Language: lang, Text: b.Text}})
 				}
 			} else {
-				out = append(out, IRBlock{CodeBlock: &IRCodeBlock{Text: b.Text}})
+				out = append(out, IRBlock{CodeBlock: &IRCodeBlock{Language: lang, Text: b.Text}})
 			}
 		case Table:
 			if b.Table != nil && len(b.Table.Rows) > 0 {

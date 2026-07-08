@@ -66,12 +66,12 @@ The output HTML contains `<style>` blocks (not `<link>` tags) so each file is fu
 
 This means:
 - Known identifiers (`prompt`, `agent`) get their dedicated CSS.
-- Any new/unknown identifier automatically gets the default styling.
-- To add a new styled identifier, just add a `{name}.css` file in `css/` and rebuild.
+- Registered chat identifiers without dedicated CSS get the default styling.
+- To add a new styled chat identifier, register it as a chat identifier, add a `{name}.css` file in `css/`, and rebuild.
 
 ### Default identifier handling
 
-When the HTML renderer encounters a chat block with role `foo` and no `foo.css` exists:
+When the HTML renderer encounters a registered chat block with role `foo` and no `foo.css` exists:
 - The `<div>` gets `class="chat-block chat-foo chat-default"`.
 - `default.css` styles `.chat-default` as the fallback.
 - If `foo.css` is later added, it styles `.chat-foo` and takes precedence.
@@ -83,6 +83,8 @@ Custom code blocks (language identifier in a configurable list) contain inner ma
 - **Custom identifier** -> recursively parse inner text as markdown -> render nested IR to HTML -> wrap in `<div class="chat-block chat-{role}">`
 - **Programming language** -> render as `<pre><code class="language-{lang}">`
 - **No identifier** -> render as `<pre><code>`
+
+The default configurable list is the built-in chat identifiers (`prompt`, `agent`, `problem`, `solution`, `context`, `shell`, `quote`, `slack`). Library callers can override the list with `ASTToIRWithOptions`.
 
 ## Other rendering rules (from PROMPT.md)
 

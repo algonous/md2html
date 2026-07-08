@@ -108,6 +108,53 @@ func TestASTToIR_ChatBlocks(t *testing.T) {
 	}
 }
 
+func TestASTToIRWithOptionsCanDisableChatBlocks(t *testing.T) {
+	astDoc, err := ParseMarkdownToAST("```prompt\nkeep me literal\n```\n")
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+
+	ir := ASTToIRWithOptions(astDoc, IROptions{ChatBlockIdentifiers: []string{}})
+
+	if len(ir.Blocks) != 1 {
+		t.Fatalf("expected 1 block, got %d", len(ir.Blocks))
+	}
+	code := ir.Blocks[0].CodeBlock
+	if code == nil {
+		t.Fatalf("expected code block, got %+v", ir.Blocks[0])
+	}
+	if code.Language != "prompt" || code.Text != "keep me literal" {
+		t.Fatalf("unexpected code block: %+v", code)
+	}
+}
+
+func TestASTToIRWithOptionsCanRegisterCustomChatBlock(t *testing.T) {
+	astDoc, err := ParseMarkdownToAST("```review\nLooks **good**.\n```\n")
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+
+	ir := ASTToIRWithOptions(astDoc, IROptions{ChatBlockIdentifiers: []string{"review"}})
+
+	if len(ir.Blocks) != 1 {
+		t.Fatalf("expected 1 block, got %d", len(ir.Blocks))
+	}
+	chat := ir.Blocks[0].ChatBlock
+	if chat == nil {
+		t.Fatalf("expected chat block, got %+v", ir.Blocks[0])
+	}
+	if chat.Role != "review" {
+		t.Fatalf("role = %q, want review", chat.Role)
+	}
+	if len(chat.Inner.Blocks) != 1 || chat.Inner.Blocks[0].Paragraph == nil {
+		t.Fatalf("unexpected chat inner blocks: %+v", chat.Inner.Blocks)
+	}
+	got := segmentsToPlainText(chat.Inner.Blocks[0].Paragraph.Segments)
+	if got != "Looks good." {
+		t.Fatalf("inner text = %q, want Looks good.", got)
+	}
+}
+
 func TestASTToIR_MixedTopLevelListBecomesOrderedWithBulletChildren(t *testing.T) {
 	input := `1. Ingest
 
