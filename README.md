@@ -6,12 +6,13 @@ A Markdown-to-HTML converter with support for chat blocks. Designed for renderin
 
 ```
 Markdown  ->  AST  ->  IR  ->  HTML
-          (goldmark)  (ir.go)  (html.go)
+          (goldmark)  (ir.go)  ->  Plain Text
 ```
 
 1. **AST** (`ast.go`) -- Parses markdown via [goldmark](https://github.com/yuin/goldmark) (with GFM extensions) into a normalized block AST.
 2. **IR** (`ir.go`) -- Converts AST blocks into an output-format-agnostic intermediate representation. Fenced blocks tagged with chat identifiers (e.g. `prompt`, `agent`) are recursively parsed as nested markdown; ordinary language fences remain code blocks.
 3. **HTML** (`html.go`) -- Renders the IR to a self-contained HTML document with embedded CSS and a zoom keyboard shortcut.
+4. **Plain Text** (`plaintext.go`) -- Renders the IR to user-visible text with Markdown formatting removed.
 
 ## Supported elements
 
@@ -106,6 +107,20 @@ The following identifiers are treated as chat blocks. Identifiers with dedicated
 Library callers can override chat block identifiers with `ASTToIRWithOptions`.
 Passing an empty identifier list disables chat block parsing and renders all
 fenced blocks as code blocks.
+
+## Library API
+
+Use `IRToPlainText` or `MarkdownToPlainText` when callers need searchable or
+copyable user-visible text without Markdown formatting characters.
+
+```go
+plain, err := md2html.MarkdownToPlainText("So it's **not CPU**.")
+// plain == "So it's not CPU."
+```
+
+Plain text output keeps visible content such as code blocks, table cells, link
+labels, image alt text, and nested chat block content. It does not include
+Markdown formatting markers or generated HTML.
 
 ## CSS
 
